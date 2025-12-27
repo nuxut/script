@@ -8,10 +8,14 @@ sudo sed -i '/ParallelDownloads/c\ParallelDownloads = 24' /etc/pacman.conf
 echo "Installing reflector"
 sudo pacman -S --needed --noconfirm reflector rsync
 
-sudo reflector -l 20 --sort rate --save /etc/pacman.d/mirrorlist
-
-echo "Added fastest mirror lists: "
+if sudo reflector -l 20 --sort rate --save /etc/pacman.d/mirrorlist; then
+    echo "Added fastest mirror lists: "
+else
+    echo "Connection is not stable! Reflector will work periodically later on..."
+    echo "Current mirror lists: "
+fi
 cat /etc/pacman.d/mirrorlist
+sleep 2
 
 sudo sh -c 'rm -f /etc/xdg/reflector/reflector.conf 2>/dev/null; cat > /etc/xdg/reflector/reflector.conf << EOF
 --save /etc/pacman.d/mirrorlist
@@ -21,6 +25,9 @@ sudo sh -c 'rm -f /etc/xdg/reflector/reflector.conf 2>/dev/null; cat > /etc/xdg/
 EOF'
 
 sudo systemctl enable --now reflector.timer
+
+echo "Mirror list will be updated periodically..."
+sleep 1
 
 echo "Updating system"
 sudo pacman -Syu --noconfirm
