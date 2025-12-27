@@ -36,7 +36,7 @@ yay -S --needed --noconfirm pamac-all pamac-tray-plasma-git paru
 echo "Installing reflector"
 sudo pacman -S --needed --noconfirm reflector rsync
 
-sudo reflector -l 6 --sort rate --save /etc/pacman.d/mirrorlist
+sudo reflector -l 20 --sort rate --save /etc/pacman.d/mirrorlist
 
 echo "Added fastest mirror lists: "
 cat /etc/pacman.d/mirrorlist
