@@ -5,6 +5,23 @@ set -e
 echo "Enabling parallel downloads for pacman"
 sudo sed -i '/ParallelDownloads/c\ParallelDownloads = 24' /etc/pacman.conf
 
+echo "Installing reflector"
+sudo pacman -S --needed --noconfirm reflector rsync
+
+sudo reflector -l 20 --sort rate --save /etc/pacman.d/mirrorlist
+
+echo "Added fastest mirror lists: "
+cat /etc/pacman.d/mirrorlist
+
+sudo sh -c 'rm -f /etc/xdg/reflector/reflector.conf 2>/dev/null; cat > /etc/xdg/reflector/reflector.conf << EOF
+--save /etc/pacman.d/mirrorlist
+--protocol https
+--latest 6
+--sort rate
+EOF'
+
+sudo systemctl enable --now reflector.timer
+
 echo "Updating system"
 sudo pacman -Syu --noconfirm
 
@@ -33,22 +50,6 @@ sudo pacman -S --needed --noconfirm rustup cargo
 rustup default stable
 yay -S --needed --noconfirm pamac-all pamac-tray-plasma-git paru
 
-echo "Installing reflector"
-sudo pacman -S --needed --noconfirm reflector rsync
-
-sudo reflector -l 20 --sort rate --save /etc/pacman.d/mirrorlist
-
-echo "Added fastest mirror lists: "
-cat /etc/pacman.d/mirrorlist
-
-sudo sh -c 'rm -f /etc/xdg/reflector/reflector.conf 2>/dev/null; cat > /etc/xdg/reflector/reflector.conf << EOF
---save /etc/pacman.d/mirrorlist
---protocol https
---latest 6
---sort rate
-EOF'
-
-sudo systemctl enable --now reflector.timer
 
 
 echo "Adding sdd trims to fstab"
