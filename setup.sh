@@ -28,15 +28,12 @@ if [ $SUDO_STATUS -ne 0 ]; then
     exit 1
 fi
 
-(while true; do sudo -v; sleep 60; done) &
+(while true; do sudo -n true; sleep 40; kill -0 "$$" || exit; done) 2>/dev/null &
 SUDO_PID=$!
-
 trap 'kill $SUDO_PID 2>/dev/null' EXIT
 
 echo -e "${GREEN}:: Privileges granted, proceeding with installation...${NC}"
 sleep 1
-
-
 
 echo -e "${GREEN}:: Starting Nuxut installation!${NC}"
 for i in {5..1}; do
