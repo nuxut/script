@@ -93,6 +93,6 @@ Session=hyprland
 Current=catppuccin-frappe-sapphire
 EOF"
 
-sudo systemctl enable --now sddm
+sudo systemctl enable sddm
 echo "Hyprland installiation complete"
 sleep 2
