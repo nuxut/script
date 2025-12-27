@@ -112,5 +112,5 @@ sleep 1
 if [ -n "$DISPLAY" ] || [ -n "$WAYLAND_DISPLAY" ]; then
     echo "You are already in a graphical session. Please log out and select Hyprland."
 else
-    exec Hyprland
+    sudo systemctl start sddm
 fi
