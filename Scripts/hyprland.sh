@@ -4,7 +4,7 @@ echo "Initializing hyprland"
 sleep 3
 
 echo "Installing hyprland and sddm"
-sudo pacman -S --needed --noconfirm hyprland sddm hyprlock dunst pipewire wireplumber xdg-desktop-portal-hyprland qt5-wayland qt6-wayland
+sudo pacman -S --needed --noconfirm hyprland sddm hyprlock dunst pipewire wireplumber xdg-desktop-portal-hyprland qt5-wayland qt6-wayland hyprpolkitagent
 
 echo "Setting sddm"
 sleep 1
