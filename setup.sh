@@ -38,12 +38,12 @@ sleep 1
 
 
 
-echo -e "${GREEN}:: Starting Nuxut installiation!${NC}"
+echo -e "${GREEN}:: Starting Nuxut installation!${NC}"
 for i in {5..1}; do
     echo "$i..."
     sleep 1
 done
-echo -e "${GREEN}:: Installiation started...${NC}"
+echo -e "${GREEN}:: Installation started...${NC}"
 sleep 1
 
 
