@@ -143,39 +143,6 @@ fixed_font="CaskaydiaCove Nerd Font,11,-1,5,50,0,0,0,0,0"
 CONF_EOF
 done
 
-# Ensure environment variables are set
-for rc in ~/.bashrc ~/.profile; do
-    # Switch from qt5ct to qt6ct if present
-    if grep -q "QT_QPA_PLATFORMTHEME=qt5ct" "$rc"; then
-         sed -i 's/QT_QPA_PLATFORMTHEME=qt5ct/QT_QPA_PLATFORMTHEME=qt6ct/' "$rc"
-    fi
-    if ! grep -q "QT_QPA_PLATFORMTHEME" "$rc"; then
-        echo 'export QT_QPA_PLATFORMTHEME=qt6ct' >> "$rc"
-    fi
-    
-    if ! grep -q "GTK_THEME=" "$rc"; then
-        echo "export GTK_THEME=$GTK_THEME_NAME" >> "$rc"
-    else
-        sed -i "s/GTK_THEME=.*/GTK_THEME=$GTK_THEME_NAME/" "$rc"
-    fi
-done
-
-if command -v fish &> /dev/null; then
-    mkdir -p ~/.config/fish
-    if grep -q "QT_QPA_PLATFORMTHEME qt5ct" ~/.config/fish/config.fish; then
-         sed -i 's/QT_QPA_PLATFORMTHEME qt5ct/QT_QPA_PLATFORMTHEME qt6ct/' ~/.config/fish/config.fish
-    fi
-
-    if ! grep -q "QT_QPA_PLATFORMTHEME" ~/.config/fish/config.fish 2>/dev/null; then
-        echo 'set -gx QT_QPA_PLATFORMTHEME qt6ct' >> ~/.config/fish/config.fish
-    fi
-    
-    if ! grep -q "GTK_THEME" ~/.config/fish/config.fish 2>/dev/null; then
-        echo "set -gx GTK_THEME $GTK_THEME_NAME" >> ~/.config/fish/config.fish
-    else
-         sed -i "s/set -gx GTK_THEME .*/set -gx GTK_THEME $GTK_THEME_NAME/" ~/.config/fish/config.fish
-    fi
-fi
 
 # Kitty
 cat <<EOF > ~/.config/kitty/kitty.conf
