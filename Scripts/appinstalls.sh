@@ -6,7 +6,7 @@ echo "Installing necessary apps"
 sleep 3
 
 yay -S --needed --noconfirm brave-bin
-sudo pacman -S --needed --noconfirm kitty nautilus fuzzel zed gnome-text-editor gnome-keyring kwallet blueman grim slurp
+sudo pacman -S --needed --noconfirm kitty nautilus fuzzel zed gnome-text-editor gnome-keyring kwallet blueman grim slurp libreoffice-still
 
 echo "Installing windows compatibility tools"
 
