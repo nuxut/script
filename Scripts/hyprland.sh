@@ -18,7 +18,7 @@ touch ~/.config/hypr/configs/custom/env.conf \
       ~/.config/hypr/configs/custom/rules.conf \
       ~/.config/hypr/configs/custom/keybinds.conf
 
-cp -r $CACHE_DIR/Scripts/Assets/config/ ~/.config/
+cp -r $CACHE_DIR/Scripts/Assets/config/* ~/.config/
 
 CONFIG_FILE="$HOME/.config/hypr/configs/custom/general.conf"
 XKB_SYMBOLS_DIR="/usr/share/X11/xkb/symbols"
