@@ -49,9 +49,10 @@ yay -S --needed --noconfirm plymouth-theme-catppuccin-frappe-git
 
 cd /tmp && git clone https://github.com/catppuccin/grub.git && sudo cp -r grub/src/catppuccin-frappe-grub-theme /boot/grub/themes/ && sudo chown -R root:root /boot/grub/themes/catppuccin-frappe-grub-theme && sudo chmod -R 755 /boot/grub/themes/catppuccin-frappe-grub-theme && rm -rf grub
 
-sudo sed -i 's|^[[:space:]]*GRUB_THEME.*|GRUB_THEME="/boot/grub/themes/catppuccin-frappe-grub-theme/theme.txt"|' /etc/default/grub &&
+sudo sed -i 's|.*GRUB_THEME=.*|GRUB_THEME="/boot/grub/themes/catppuccin-frappe-grub-theme/theme.txt"|' /etc/default/grub &&
 sudo grub-mkconfig -o /boot/grub/grub.cfg
-sudo mkinitcpio -P
+
+sudo plymouth-set-default-theme -R catppuccin-frappe
 
 echo "System cosmetics set!"
 sleep 2

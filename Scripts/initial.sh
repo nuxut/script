@@ -3,12 +3,12 @@
 set -e
 
 echo "Enabling parallel downloads for pacman"
-sudo sed -i '/ParallelDownloads/c\ParallelDownloads = 24' /etc/pacman.conf
+sudo sed -i '/ParallelDownloads/c\ParallelDownloads = 12' /etc/pacman.conf
 
 echo "Installing reflector"
 sudo pacman -S --needed --noconfirm reflector rsync
 
-if sudo reflector -l 20 --sort rate --save /etc/pacman.d/mirrorlist; then
+if sudo reflector -l 6 --sort rate --save /etc/pacman.d/mirrorlist; then
     echo "Added fastest mirror lists: "
 else
     echo "Connection is not stable! Reflector will work periodically later on..."
@@ -56,6 +56,80 @@ echo "Installing pamac and paru"
 sudo pacman -S --needed --noconfirm rustup cargo
 rustup default stable
 yay -S --needed --noconfirm pamac-all pamac-tray-plasma-git paru
+
+echo "Configuring pamac..."
+if [ -f /etc/pamac.conf ]; then
+    echo "pamac.conf found, updating settings..."
+    sudo sed -i '/#EnableAUR/s/^#//' /etc/pamac.conf || true
+    sudo sed -i '/#KeepBuiltPkgs/s/^#//' /etc/pamac.conf || true
+    sudo sed -i '/#CheckAURUpdates/s/^#//' /etc/pamac.conf || true
+    sudo sed -i '/#CheckAURVCSUpdates/s/^#//' /etc/pamac.conf || true
+    sudo sed -i '/#CheckFlatpakUpdates/s/^#//' /etc/pamac.conf || true
+    sudo sed -i '/#EnableFlatpak/s/^#//' /etc/pamac.conf || true
+else
+    echo "pamac.conf not found, creating with default settings..."
+    sudo sh -c 'cat > /etc/pamac.conf << EOF
+### Pamac configuration file
+
+## When removing a package, also remove those dependencies
+## that are not required by other packages (recurse option):
+#RemoveUnrequiredDeps
+
+## How often to check for updates, value in hours (0 to disable):
+RefreshPeriod = 6
+
+## When no update is available, hide the tray icon:
+#NoUpdateHideIcon
+
+## When applying updates, enable packages downgrade:
+#EnableDowngrade
+
+## When installing packages, do not check for updates:
+#SimpleInstall
+
+## Allow Pamac to search and install packages from AUR:
+EnableAUR
+
+## Keep built packages from AUR in cache after installation:
+KeepBuiltPkgs
+
+## When AUR support is enabled check for updates from AUR:
+CheckAURUpdates
+
+## When check updates from AUR support is enabled check for vcs updates:
+CheckAURVCSUpdates
+
+## AUR build directory:
+BuildDirectory = /var/tmp
+
+## Number of versions of each package to keep when cleaning the packages cache:
+KeepNumPackages = 3
+
+## Remove only the versions of uninstalled packages when cleaning the packages cache:
+#OnlyRmUninstalled
+
+## Download updates in background:
+#DownloadUpdates
+
+## Offline upgrade:
+#OfflineUpgrade
+
+## Maximum Parallel Downloads:
+MaxParallelDownloads = 4
+
+CheckFlatpakUpdates
+
+#EnableSnap
+
+EnableFlatpak
+EOF'
+fi
+
+# Ensure correct permissions
+echo "Setting permissions for /etc/pamac.conf..."
+sudo chmod 644 /etc/pamac.conf
+sudo chown root:root /etc/pamac.conf
+ls -l /etc/pamac.conf
 
 
 
