@@ -249,4 +249,10 @@ if ! grep -q "starship init bash" ~/.bashrc; then
     echo 'eval "$(starship init bash)"' >> ~/.bashrc
 fi
 
+if command -v fish &> /dev/null; then
+    if ! grep -q "starship init fish" ~/.config/fish/config.fish 2>/dev/null; then
+        echo 'starship init fish | source' >> ~/.config/fish/config.fish
+    fi
+fi
+
 echo "Themes configured."
